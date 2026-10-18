@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Military Calisthenics 15-Min Fat Burn Challenge</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts & Lucide Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            tactical: ['Chakra Petch', 'sans-serif']
+          },
+          colors: {
+            tactical: {
+              bg: '#0D1117',
+              card: '#161B22',
+              border: '#30363D',
+              green: '#22C55E',
+              orange: '#F97316',
+              yellow: '#EAB308',
+              muted: '#8B949E'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0D1117;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #30363D;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #484F58;
+    }
+    /* Pulse Animation for Work phase */
+    @keyframes pulseGlowGreen {
+      0%, 100% { box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); }
+      50% { box-shadow: 0 0 30px rgba(34, 197, 94, 0.4); }
+    }
+    @keyframes pulseGlowOrange {
+      0%, 100% { box-shadow: 0 0 15px rgba(249, 115, 22, 0.2); }
+      50% { box-shadow: 0 0 30px rgba(249, 115, 22, 0.4); }
+    }
+    .glow-work {
+      animation: pulseGlowGreen 2s infinite;
+      border-color: #22C55E !important;
+    }
+    .glow-rest {
+      animation: pulseGlowOrange 2s infinite;
+      border-color: #F97316 !important;
+    }
+  </style>
+</head>
+<body class="bg-tactical-bg text-gray-100 font-sans min-h-screen flex flex-col justify-between selection:bg-tactical-green selection:text-black">
+
+  <!-- TOP HEADER -->
+  <header class="border-b border-tactical-border bg-tactical-card/80 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="p-2 bg-tactical-green/10 rounded-lg border border-tactical-green/30 text-tactical-green">
+          <i data-lucide="shield-alert" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h1 class="font-tactical text-lg sm:text-xl font-bold tracking-wider text-white">MILITARY CALISTHENICS</h1>
+          <p class="text-xs text-tactical-muted uppercase tracking-widest hidden sm:block">15-Min Fat Burn Challenge</p>
+        </div>
+      </div>
+      <!-- Mode Toggle / Quick Info -->
+      <div class="flex items-center space-x-2">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium font-tactical bg-tactical-green/10 text-tactical-green border border-tactical-green/20">
+          <i data-lucide="zap" class="w-3.5 h-3.5 mr-1"></i> 15 MINS • 15 ROUNDS
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
+    
+    <!-- LEFT COLUMN: INTERACTIVE TIMER & CURRENT EXERCISE (LG: 7 Cols) -->
+    <section class="lg:col-span-7 flex flex-col space-y-6">
+      
+      <!-- MAIN TIMER DISPLAY CARD -->
+      <div id="timerCard" class="bg-tactical-card border-2 border-tactical-border rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden shadow-2xl transition-all duration-300">
+        
+        <!-- Status Header Badge -->
+        <div class="flex justify-between items-center mb-6 z-10">
+          <div class="flex items-center space-x-2">
+            <span id="phaseBadge" class="px-4 py-1.5 rounded-full text-xs font-tactical font-bold uppercase tracking-wider bg-gray-800 text-gray-400 border border-gray-700">
+              READY
+            </span>
+            <span id="circuitBadge" class="px-3 py-1.5 rounded-full text-xs font-tactical font-medium bg-tactical-bg text-tactical-muted border border-tactical-border">
+              Circuit 1 of 3
+            </span>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-tactical-muted block uppercase font-tactical">Total Remaining</span>
+            <span id="totalTimeDisplay" class="font-tactical text-lg font-bold text-gray-200">15:00</span>
+          </div>
+        </div>
+
+        <!-- Central Big Display -->
+        <div class="text-center my-4 z-10">
+          <h2 id="currentExerciseTitle" class="font-tactical text-2xl sm:text-4xl font-extrabold text-white tracking-wide mb-2">
+            Bodyweight Squats
+          </h2>
+          <p id="exerciseContextText" class="text-xs sm:text-sm text-tactical-muted font-medium mb-6">
+            Circuit 1: Lower Body • Round 1 of 2
+          </p>
+
+          <!-- Large Numeric Countdown -->
+          <div class="relative inline-flex items-center justify-center my-2">
+            <span id="intervalTimeDisplay" class="font-tactical text-7xl sm:text-9xl font-extrabold tracking-tight text-white drop-shadow-md">
+              00:40
+            </span>
+          </div>
+        </div>
+
+        <!-- Current Interval & Overall Progress Bars -->
+        <div class="space-y-3 my-4 z-10">
+          <div>
+            <div class="flex justify-between text-xs text-tactical-muted mb-1 font-tactical">
+              <span>Interval Progress</span>
+              <span id="intervalProgressPercent">100%</span>
+            </div>
+            <div class="w-full bg-tactical-bg rounded-full h-2.5 overflow-hidden border border-tactical-border">
+              <div id="intervalProgressBar" class="bg-tactical-green h-2.5 rounded-full transition-all duration-300 w-full"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs text-tactical-muted mb-1 font-tactical">
+              <span>Overall Workout Progress</span>
+              <span id="overallProgressPercent">0%</span>
+            </div>
+            <div class="w-full bg-tactical-bg rounded-full h-2 overflow-hidden border border-tactical-border">
+              <div id="overallProgressBar" class="bg-blue-500 h-2 rounded-full transition-all duration-300 w-0"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTROLS & ACTION BUTTONS -->
+        <div class="pt-4 border-t border-tactical-border flex flex-wrap items-center justify-center gap-3 z-10">
+          <button id="prevBtn" onclick="previousStep()" class="p-3 bg-tactical-bg hover:bg-gray-800 text-gray-300 rounded-xl border border-tactical-border transition-colors flex items-center justify-center disabled:opacity-40" title="Previous Exercise">
+            <i data-lucide="skip-back" class="w-5 h-5"></i>
+          </button>
+          
+          <button id="startPauseBtn" onclick="toggleTimer()" class="px-8 py-3.5 bg-tactical-green hover:bg-green-600 text-black font-tactical font-extrabold rounded-xl shadow-lg transition-transform active:scale-95 flex items-center justify-center space-x-2 text-base">
+            <i data-lucide="play" id="startPauseIcon" class="w-5 h-5 fill-current"></i>
+            <span id="startPauseText">START WORKOUT</span>
+          </button>
+
+          <button id="resetBtn" onclick="resetWorkout()" class="p-3 bg-tactical-bg hover:bg-gray-800 text-gray-300 rounded-xl border border-tactical-border transition-colors flex items-center justify-center" title="Reset Workout">
+            <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+          </button>
+
+          <button id="nextBtn" onclick="skipStep()" class="p-3 bg-tactical-bg hover:bg-gray-800 text-gray-300 rounded-xl border border-tactical-border transition-colors flex items-center justify-center disabled:opacity-40" title="Skip to Next">
+            <i data-lucide="skip-forward" class="w-5 h-5"></i>
+          </button>
+          
+          <button id="audioToggleBtn" onclick="toggleAudio()" class="p-3 bg-tactical-bg hover:bg-gray-800 text-tactical-green rounded-xl border border-tactical-border transition-colors flex items-center justify-center ml-auto" title="Toggle Sound Beeps">
+            <i data-lucide="volume-2" id="audioIcon" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- ACTIVE EXERCISE TIPS & TECHNIQUE -->
+      <div class="bg-tactical-card border border-tactical-border rounded-2xl p-6 shadow-md">
+        <div class="flex items-center space-x-2 mb-4">
+          <i data-lucide="compass" class="w-5 h-5 text-tactical-green"></i>
+          <h3 class="font-tactical text-lg font-bold text-white uppercase tracking-wider">Form & Technique Guide</h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-tactical-bg p-4 rounded-xl border border-tactical-border">
+            <h4 class="text-xs font-tactical text-tactical-green uppercase mb-2 flex items-center">
+              <i data-lucide="check-circle-2" class="w-4 h-4 mr-1.5"></i> Key Technique Steps
+            </h4>
+            <ul id="activeInstructions" class="text-sm text-gray-300 space-y-2 list-disc list-inside">
+              <!-- Dynamically populated -->
+            </ul>
+          </div>
+          <div class="bg-tactical-bg p-4 rounded-xl border border-tactical-border">
+            <h4 class="text-xs font-tactical text-tactical-orange uppercase mb-2 flex items-center">
+              <i data-lucide="target" class="w-4 h-4 mr-1.5"></i> Target Muscles & Focus
+            </h4>
+            <p id="activeTarget" class="text-sm text-gray-300 leading-relaxed">
+              <!-- Dynamically populated -->
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT COLUMN: CIRCUIT BREAKDOWN & OVERVIEW (LG: 5 Cols) -->
+    <section class="lg:col-span-5 space-y-6">
+      
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="font-tactical text-xl font-bold text-white flex items-center">
+          <i data-lucide="list-checks" class="w-5 h-5 mr-2 text-tactical-green"></i>
+          CIRCUIT SCHEDULE
+        </h2>
+        <span class="text-xs font-tactical text-tactical-muted">40s WORK / 20s REST</span>
+      </div>
+
+      <!-- CIRCUIT CARDS ACCORDION/LIST -->
+      <div id="circuitListContainer" class="space-y-4">
+        <!-- Dynamically rendered circuits -->
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-tactical-border bg-tactical-card py-4 mt-8">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-tactical-muted flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>© Military Calisthenics Routine • High Intensity Interval Training</p>
+      <p class="flex items-center gap-1">
+        <i data-lucide="shield-check" class="w-4 h-4 text-tactical-green"></i> Bodyweight Equipment Free
+      </p>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT APP LOGIC -->
+  <script>
+    // --- WORKOUT DATA STRUCTURE ---
+    const WORKOUT_CONFIG = [
+      {
+        id: 1,
+        title: "Circuit 1: Lower Body",
+        subtitle: "2 Rounds • Quadriceps, Hamstrings, Glutes",
+        rounds: 2,
+        badgeColor: "text-green-400 border-green-500/30 bg-green-500/10",
+        exercises: [
+          {
+            name: "Bodyweight Squats",
+            instructions: [
+              "Keep feet shoulder-width apart, toes turned slightly out.",
+              "Push hips back and lower until thighs are parallel to floor.",
+              "Drive through heels to stand, squeezing glutes at the top."
+            ],
+            target: "Quadriceps, Glutes, Hamstrings, Core Stability"
+          },
+          {
+            name: "Reverse Lunges",
+            instructions: [
+              "Step one leg back smoothly, landing on the ball of your foot.",
+              "Lower hips until both knees form 90-degree angles.",
+              "Push through front heel to return to starting position."
+            ],
+            target: "Glutes, Quadriceps, Balance & Unilateral Hip Stability"
+          },
+          {
+            name: "Glute Bridges",
+            instructions: [
+              "Lie flat on back with knees bent and feet hip-width flat on floor.",
+              "Drive through heels to lift hips straight toward the ceiling.",
+              "Squeeze glutes hard at top for 1s before lowering under control."
+            ],
+            target: "Glutes, Hamstrings, Lower Back, Pelvic Stability"
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Circuit 2: Upper Body",
+        subtitle: "2 Rounds • Chest, Shoulders, Triceps, Upper Back",
+        rounds: 2,
+        badgeColor: "text-blue-400 border-blue-500/30 bg-blue-500/10",
+        exercises: [
+          {
+            name: "Dive Bombers",
+            instructions: [
+              "Start in a downward dog/pike position with hips elevated.",
+              "Swoop chest down toward floor between hands in a fluid arc.",
+              "Push up into an upward dog, then reverse the arc back to start."
+            ],
+            target: "Shoulders, Chest, Triceps, Core & Spine Mobility"
+          },
+          {
+            name: "Hand-Release Push-Ups",
+            instructions: [
+              "Lower body completely flat to the floor in a straight plank line.",
+              "Lift both hands off the ground briefly to ensure full range.",
+              "Plant hands firmly and press body back up in one rigid block."
+            ],
+            target: "Pectorals, Anterior Deltoids, Triceps, Core Tightness"
+          },
+          {
+            name: "Superman Pulls",
+            instructions: [
+              "Lie face down, extend legs and lift chest slightly off the floor.",
+              "Pull elbows back aggressively toward ribcage, squeezing scapulae.",
+              "Reach back forward under tension while keeping upper back engaged."
+            ],
+            target: "Latissimus Dorsi, Rhomboids, Rear Deltoids, Erector Spinae"
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "Circuit 3: Core",
+        subtitle: "1 Round • Rectus Abdominis, Obliques, Deep Core",
+        rounds: 1,
+        badgeColor: "text-orange-400 border-orange-500/30 bg-orange-500/10",
+        exercises: [
+          {
+            name: "Flutter Kicks",
+            instructions: [
+              "Lie on back, press lower back firmly into the floor.",
+              "Lift legs 6 inches off ground with legs straight and toes pointed.",
+              "Alternate small, rapid up-and-down kicking motions."
+            ],
+            target: "Lower Abdominis, Hip Flexors, Transverse Abdominis"
+          },
+          {
+            name: "Bear Plank Hold",
+            instructions: [
+              "Start on hands and knees in tabletop position.",
+              "Tuck toes and lift knees just 1-2 inches directly off the floor.",
+              "Hold position with flat back, braced core, and packed shoulders."
+            ],
+            target: "Deep Core, Quad Isometrics, Shoulder Stability"
+          },
+          {
+            name: "Bicycle Crunches",
+            instructions: [
+              "Hands behind head, knees raised at 90 degrees.",
+              "Rotate torso to bring right elbow toward incoming left knee.",
+              "Alternate sides smoothly without pulling on your neck."
+            ],
+            target: "Internal/External Obliques, Upper & Lower Abdomen"
+          }
+        ]
+      }
+    ];
+
+    const WORK_DURATION = 40;
+    const REST_DURATION = 20;
+
+    // --- STATE MANAGEMENT ---
+    let schedule = []; // Flattened list of all 15 exercise intervals
+    let currentIndex = 0;
+    let isWorkPhase = true; // true = WORK, false = REST
+    let phaseTimeRemaining = WORK_DURATION;
+    let timerInterval = null;
+    let isRunning = false;
+    let audioEnabled = true;
+
+    // --- WEB AUDIO API FOR BEEPS ---
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playBeep(freq, type, duration) {
+      if (!audioEnabled) return;
+      try {
+        initAudio();
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type || 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.log("Audio not allowed yet");
+      }
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const btn = document.getElementById("audioToggleBtn");
+      const icon = document.getElementById("audioIcon");
+      if (audioEnabled) {
+        btn.classList.replace("text-gray-500", "text-tactical-green");
+        icon.setAttribute("data-lucide", "volume-2");
+      } else {
+        btn.classList.replace("text-tactical-green", "text-gray-500");
+        icon.setAttribute("data-lucide", "volume-x");
+      }
+      lucide.createIcons();
+    }
+
+    // --- BUILD FLATTENED WORKOUT SCHEDULE ---
+    function buildSchedule() {
+      schedule = [];
+      WORKOUT_CONFIG.forEach(circuit => {
+        for (let r = 1; r <= circuit.rounds; r++) {
+          circuit.exercises.forEach(ex => {
+            schedule.push({
+              circuitId: circuit.id,
+              circuitTitle: circuit.title,
+              roundNum: r,
+              totalRounds: circuit.rounds,
+              exercise: ex
+            });
+          });
+        }
+      });
+    }
+
+    // --- RENDER CIRCUIT LIST SIDEBAR ---
+    function renderCircuitOverview() {
+      const container = document.getElementById('circuitListContainer');
+      container.innerHTML = '';
+
+      WORKOUT_CONFIG.forEach(circuit => {
+        const card = document.createElement('div');
+        card.className = 'bg-tactical-card border border-tactical-border rounded-xl p-4 transition-all duration-200';
+        card.id = `circuit-card-${circuit.id}`;
+
+        let exerciseListHtml = circuit.exercises.map(ex => `
+          <li class="text-xs text-gray-300 flex items-center py-1 border-b border-tactical-border/50 last:border-0">
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 mr-1.5 text-tactical-muted"></i>
+            <span>${ex.name}</span>
+          </li>
+        `).join('');
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <h3 class="font-tactical text-base font-bold text-white">${circuit.title}</h3>
+              <p class="text-xs text-tactical-muted">${circuit.subtitle}</p>
+            </div>
+            <span class="text-xs font-tactical px-2 py-0.5 rounded border ${circuit.badgeColor}">
+              ${circuit.id === 3 ? '1 Round' : '2 Rounds'}
+            </span>
+          </div>
+          <ul class="mt-3 space-y-1 bg-tactical-bg p-2.5 rounded-lg border border-tactical-border">
+            ${exerciseListHtml}
+          </ul>
+        `;
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    // --- UPDATE UI STATES ---
+    function updateUI() {
+      if (schedule.length === 0) return;
+
+      const currentItem = schedule[currentIndex];
+      const timerCard = document.getElementById("timerCard");
+      const phaseBadge = document.getElementById("phaseBadge");
+      const currentExerciseTitle = document.getElementById("currentExerciseTitle");
+      const exerciseContextText = document.getElementById("exerciseContextText");
+      const intervalTimeDisplay = document.getElementById("intervalTimeDisplay");
+      const totalTimeDisplay = document.getElementById("totalTimeDisplay");
+      const circuitBadge = document.getElementById("circuitBadge");
+
+      // Active Instructions
+      const activeInstructions = document.getElementById("activeInstructions");
+      const activeTarget = document.getElementById("activeTarget");
+
+      // Update Exercise Text
+      if (isWorkPhase) {
+        currentExerciseTitle.textContent = currentItem.exercise.name;
+        exerciseContextText.textContent = `${currentItem.circuitTitle} • Round ${currentItem.roundNum} of ${currentItem.totalRounds}`;
+        phaseBadge.textContent = "WORK";
+        phaseBadge.className = "px-4 py-1.5 rounded-full text-xs font-tactical font-bold uppercase tracking-wider bg-tactical-green text-black shadow-lg";
+        
+        timerCard.classList.remove("glow-rest");
+        timerCard.classList.add("glow-work");
+      } else {
+        currentExerciseTitle.textContent = "REST & RECOVER";
+        const nextItem = schedule[currentIndex + 1];
+        exerciseContextText.textContent = nextItem 
+          ? `UP NEXT: ${nextItem.exercise.name} (${nextItem.circuitTitle})` 
+          : "FINAL REST • WORKOUT NEARLY COMPLETE!";
+        phaseBadge.textContent = "REST";
+        phaseBadge.className = "px-4 py-1.5 rounded-full text-xs font-tactical font-bold uppercase tracking-wider bg-tactical-orange text-black shadow-lg";
+        
+        timerCard.classList.remove("glow-work");
+        timerCard.classList.add("glow-rest");
+      }
+
+      circuitBadge.textContent = `Circuit ${currentItem.circuitId} of 3`;
+
+      // Update Numeric Interval Time
+      const mins = Math.floor(phaseTimeRemaining / 60);
+      const secs = phaseTimeRemaining % 60;
+      intervalTimeDisplay.textContent = `${secs < 10 ? '0' : ''}${secs}`;
+
+      // Update Total Time Remaining
+      // Total elapsed seconds = (currentIndex * 60) + (isWorkPhase ? (40 - phaseTimeRemaining) : (40 + (20 - phaseTimeRemaining)))
+      const elapsedSecs = (currentIndex * 60) + (isWorkPhase ? (WORK_DURATION - phaseTimeRemaining) : (WORK_DURATION + (REST_DURATION - phaseTimeRemaining)));
+      const totalRemainingSecs = Math.max(0, 900 - elapsedSecs);
+      const totMins = Math.floor(totalRemainingSecs / 60);
+      const totSecs = totalRemainingSecs % 60;
+      totalTimeDisplay.textContent = `${totMins}:${totSecs < 10 ? '0' : ''}${totSecs}`;
+
+      // Update Progress Bars
+      const maxInterval = isWorkPhase ? WORK_DURATION : REST_DURATION;
+      const intervalPct = Math.min(100, Math.max(0, (phaseTimeRemaining / maxInterval) * 100));
+      document.getElementById("intervalProgressBar").style.width = `${intervalPct}%`;
+      document.getElementById("intervalProgressPercent").textContent = `${Math.round(intervalPct)}%`;
+
+      if (!isWorkPhase) {
+        document.getElementById("intervalProgressBar").className = "bg-tactical-orange h-2.5 rounded-full transition-all duration-300";
+      } else {
+        document.getElementById("intervalProgressBar").className = "bg-tactical-green h-2.5 rounded-full transition-all duration-300";
+      }
+
+      const overallPct = Math.min(100, Math.max(0, (elapsedSecs / 900) * 100));
+      document.getElementById("overallProgressBar").style.width = `${overallPct}%`;
+      document.getElementById("overallProgressPercent").textContent = `${Math.round(overallPct)}%`;
+
+      // Update Form Instructions
+      activeInstructions.innerHTML = currentItem.exercise.instructions.map(inst => `<li>${inst}</li>`).join('');
+      activeTarget.textContent = currentItem.exercise.target;
+
+      // Update Sidebar Card Highlight
+      WORKOUT_CONFIG.forEach(c => {
+        const cardEl = document.getElementById(`circuit-card-${c.id}`);
+        if (c.id === currentItem.circuitId) {
+          cardEl.classList.add("border-tactical-green", "bg-tactical-card/90");
+        } else {
+          cardEl.classList.remove("border-tactical-green");
+        }
+      });
+
+      // Update Disable states for Prev/Next
+      document.getElementById("prevBtn").disabled = (currentIndex === 0 && isWorkPhase);
+      document.getElementById("nextBtn").disabled = (currentIndex === schedule.length - 1 && !isWorkPhase);
+    }
+
+    // --- TIMER CONTROL FUNCTIONS ---
+    function toggleTimer() {
+      initAudio();
+      if (isRunning) {
+        pauseTimer();
+      } else {
+        startTimer();
+      }
+    }
+
+    function startTimer() {
+      if (isRunning) return;
+      isRunning = true;
+      document.getElementById("startPauseText").textContent = "PAUSE";
+      document.getElementById("startPauseIcon").setAttribute("data-lucide", "pause");
+      document.getElementById("startPauseBtn").classList.replace("bg-tactical-green", "bg-yellow-500");
+      lucide.createIcons();
+
+      timerInterval = setInterval(() => {
+        tick();
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      isRunning = false;
+      clearInterval(timerInterval);
+      document.getElementById("startPauseText").textContent = "RESUME";
+      document.getElementById("startPauseIcon").setAttribute("data-lucide", "play");
+      document.getElementById("startPauseBtn").classList.replace("bg-yellow-500", "bg-tactical-green");
+      lucide.createIcons();
+    }
+
+    function tick() {
+      phaseTimeRemaining--;
+
+      // Audio countdown for last 3 seconds
+      if (phaseTimeRemaining <= 3 && phaseTimeRemaining > 0) {
+        playBeep(440, 'sine', 0.15); // standard warning beep
+      } else if (phaseTimeRemaining === 0) {
+        playBeep(880, 'triangle', 0.4); // high transition beep
+      }
+
+      if (phaseTimeRemaining < 0) {
+        if (isWorkPhase) {
+          // Switch to REST
+          isWorkPhase = false;
+          phaseTimeRemaining = REST_DURATION;
+        } else {
+          // Switch to WORK next exercise
+          if (currentIndex < schedule.length - 1) {
+            currentIndex++;
+            isWorkPhase = true;
+            phaseTimeRemaining = WORK_DURATION;
+          } else {
+            // Workout Complete!
+            finishWorkout();
+            return;
+          }
+        }
+      }
+      updateUI();
+    }
+
+    function skipStep() {
+      initAudio();
+      if (isWorkPhase) {
+        isWorkPhase = false;
+        phaseTimeRemaining = REST_DURATION;
+      } else {
+        if (currentIndex < schedule.length - 1) {
+          currentIndex++;
+          isWorkPhase = true;
+          phaseTimeRemaining = WORK_DURATION;
+        }
+      }
+      updateUI();
+    }
+
+    function previousStep() {
+      initAudio();
+      if (!isWorkPhase) {
+        isWorkPhase = true;
+        phaseTimeRemaining = WORK_DURATION;
+      } else {
+        if (currentIndex > 0) {
+          currentIndex--;
+          isWorkPhase = true;
+          phaseTimeRemaining = WORK_DURATION;
+        }
+      }
+      updateUI();
+    }
+
+    function resetWorkout() {
+      pauseTimer();
+      currentIndex = 0;
+      isWorkPhase = true;
+      phaseTimeRemaining = WORK_DURATION;
+      document.getElementById("startPauseText").textContent = "START WORKOUT";
+      document.getElementById("timerCard").classList.remove("glow-work", "glow-rest");
+      updateUI();
+    }
+
+    function finishWorkout() {
+      pauseTimer();
+      playBeep(523.25, 'sine', 0.2);
+      setTimeout(() => playBeep(659.25, 'sine', 0.2), 200);
+      setTimeout(() => playBeep(783.99, 'sine', 0.5), 400);
+
+      document.getElementById("currentExerciseTitle").textContent = "CHALLENGE COMPLETE! 🎉";
+      document.getElementById("exerciseContextText").textContent = "15-Minute Military Calisthenics Routine Finished";
+      document.getElementById("phaseBadge").textContent = "VICTORY";
+      document.getElementById("phaseBadge").className = "px-4 py-1.5 rounded-full text-xs font-tactical font-bold uppercase tracking-wider bg-yellow-400 text-black";
+      document.getElementById("intervalTimeDisplay").textContent = "00:00";
+      document.getElementById("totalTimeDisplay").textContent = "0:00";
+    }
+
+    // --- INITIALIZATION ---
+    window.onload = function () {
+      buildSchedule();
+      renderCircuitOverview();
+      updateUI();
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>
