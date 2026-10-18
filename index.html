@@ -2,8 +2,16 @@
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Military Calisthenics 15-Min Fat Burn Challenge</title>
+  
+  <!-- PWA Meta Tags & Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0D1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Military HIIT">
+
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts & Lucide Icons -->
@@ -38,17 +46,14 @@
   <style>
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
-      width: 8px;
+      width: 6px;
     }
     ::-webkit-scrollbar-track {
       background: #0D1117;
     }
     ::-webkit-scrollbar-thumb {
       background: #30363D;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #484F58;
+      border-radius: 3px;
     }
     /* Pulse Animation for Work phase */
     @keyframes pulseGlowGreen {
@@ -67,103 +72,106 @@
       animation: pulseGlowOrange 2s infinite;
       border-color: #F97316 !important;
     }
+    body {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
   </style>
 </head>
 <body class="bg-tactical-bg text-gray-100 font-sans min-h-screen flex flex-col justify-between selection:bg-tactical-green selection:text-black">
 
   <!-- TOP HEADER -->
-  <header class="border-b border-tactical-border bg-tactical-card/80 backdrop-blur sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="p-2 bg-tactical-green/10 rounded-lg border border-tactical-green/30 text-tactical-green">
-          <i data-lucide="shield-alert" class="w-6 h-6"></i>
+  <header class="border-b border-tactical-border bg-tactical-card/90 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+      <div class="flex items-center space-x-2.5">
+        <div class="p-1.5 bg-tactical-green/10 rounded-lg border border-tactical-green/30 text-tactical-green">
+          <i data-lucide="shield-alert" class="w-5 h-5"></i>
         </div>
         <div>
-          <h1 class="font-tactical text-lg sm:text-xl font-bold tracking-wider text-white">MILITARY CALISTHENICS</h1>
-          <p class="text-xs text-tactical-muted uppercase tracking-widest hidden sm:block">15-Min Fat Burn Challenge</p>
+          <h1 class="font-tactical text-sm sm:text-base font-bold tracking-wider text-white">MILITARY CALISTHENICS</h1>
         </div>
       </div>
       <!-- Mode Toggle / Quick Info -->
       <div class="flex items-center space-x-2">
-        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium font-tactical bg-tactical-green/10 text-tactical-green border border-tactical-green/20">
-          <i data-lucide="zap" class="w-3.5 h-3.5 mr-1"></i> 15 MINS • 15 ROUNDS
+        <span class="inline-flex items-center px-2 py-1 rounded-md text-[11px] font-medium font-tactical bg-tactical-green/10 text-tactical-green border border-tactical-green/20">
+          <i data-lucide="zap" class="w-3 h-3 mr-1"></i> 15 MINS
         </span>
       </div>
     </div>
   </header>
 
   <!-- MAIN CONTAINER -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-5">
     
     <!-- LEFT COLUMN: INTERACTIVE TIMER & CURRENT EXERCISE (LG: 7 Cols) -->
-    <section class="lg:col-span-7 flex flex-col space-y-6">
+    <section class="lg:col-span-7 flex flex-col space-y-4">
       
       <!-- MAIN TIMER DISPLAY CARD -->
-      <div id="timerCard" class="bg-tactical-card border-2 border-tactical-border rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden shadow-2xl transition-all duration-300">
+      <div id="timerCard" class="bg-tactical-card border-2 border-tactical-border rounded-2xl p-4 sm:p-6 flex flex-col justify-between relative overflow-hidden shadow-xl transition-all duration-300">
         
         <!-- Status Header Badge -->
-        <div class="flex justify-between items-center mb-6 z-10">
+        <div class="flex justify-between items-center mb-3 z-10">
           <div class="flex items-center space-x-2">
-            <span id="phaseBadge" class="px-4 py-1.5 rounded-full text-xs font-tactical font-bold uppercase tracking-wider bg-gray-800 text-gray-400 border border-gray-700">
+            <span id="phaseBadge" class="px-3 py-1 rounded-full text-[11px] font-tactical font-bold uppercase tracking-wider bg-gray-800 text-gray-400 border border-gray-700">
               READY
             </span>
-            <span id="circuitBadge" class="px-3 py-1.5 rounded-full text-xs font-tactical font-medium bg-tactical-bg text-tactical-muted border border-tactical-border">
+            <span id="circuitBadge" class="px-2.5 py-1 rounded-full text-[11px] font-tactical font-medium bg-tactical-bg text-tactical-muted border border-tactical-border">
               Circuit 1 of 3
             </span>
           </div>
           <div class="text-right">
-            <span class="text-xs text-tactical-muted block uppercase font-tactical">Total Remaining</span>
-            <span id="totalTimeDisplay" class="font-tactical text-lg font-bold text-gray-200">15:00</span>
+            <span class="text-[10px] text-tactical-muted block uppercase font-tactical">Remaining</span>
+            <span id="totalTimeDisplay" class="font-tactical text-sm font-bold text-gray-200">15:00</span>
           </div>
         </div>
 
         <!-- Central Big Display -->
-        <div class="text-center my-4 z-10">
-          <h2 id="currentExerciseTitle" class="font-tactical text-2xl sm:text-4xl font-extrabold text-white tracking-wide mb-2">
+        <div class="text-center my-2 z-10">
+          <h2 id="currentExerciseTitle" class="font-tactical text-xl sm:text-3xl font-extrabold text-white tracking-wide mb-1">
             Bodyweight Squats
           </h2>
-          <p id="exerciseContextText" class="text-xs sm:text-sm text-tactical-muted font-medium mb-6">
+          <p id="exerciseContextText" class="text-xs text-tactical-muted font-medium mb-3">
             Circuit 1: Lower Body • Round 1 of 2
           </p>
 
           <!-- Large Numeric Countdown -->
-          <div class="relative inline-flex items-center justify-center my-2">
-            <span id="intervalTimeDisplay" class="font-tactical text-7xl sm:text-9xl font-extrabold tracking-tight text-white drop-shadow-md">
+          <div class="relative inline-flex items-center justify-center my-1">
+            <span id="intervalTimeDisplay" class="font-tactical text-6xl sm:text-8xl font-extrabold tracking-tight text-white drop-shadow-md">
               00:40
             </span>
           </div>
         </div>
 
         <!-- Current Interval & Overall Progress Bars -->
-        <div class="space-y-3 my-4 z-10">
+        <div class="space-y-2.5 my-3 z-10">
           <div>
-            <div class="flex justify-between text-xs text-tactical-muted mb-1 font-tactical">
+            <div class="flex justify-between text-[11px] text-tactical-muted mb-1 font-tactical">
               <span>Interval Progress</span>
               <span id="intervalProgressPercent">100%</span>
             </div>
-            <div class="w-full bg-tactical-bg rounded-full h-2.5 overflow-hidden border border-tactical-border">
-              <div id="intervalProgressBar" class="bg-tactical-green h-2.5 rounded-full transition-all duration-300 w-full"></div>
+            <div class="w-full bg-tactical-bg rounded-full h-2 overflow-hidden border border-tactical-border">
+              <div id="intervalProgressBar" class="bg-tactical-green h-2 rounded-full transition-all duration-300 w-full"></div>
             </div>
           </div>
 
           <div>
-            <div class="flex justify-between text-xs text-tactical-muted mb-1 font-tactical">
-              <span>Overall Workout Progress</span>
+            <div class="flex justify-between text-[11px] text-tactical-muted mb-1 font-tactical">
+              <span>Overall Progress</span>
               <span id="overallProgressPercent">0%</span>
             </div>
-            <div class="w-full bg-tactical-bg rounded-full h-2 overflow-hidden border border-tactical-border">
-              <div id="overallProgressBar" class="bg-blue-500 h-2 rounded-full transition-all duration-300 w-0"></div>
+            <div class="w-full bg-tactical-bg rounded-full h-1.5 overflow-hidden border border-tactical-border">
+              <div id="overallProgressBar" class="bg-blue-500 h-1.5 rounded-full transition-all duration-300 w-0"></div>
             </div>
           </div>
         </div>
 
         <!-- CONTROLS & ACTION BUTTONS -->
-        <div class="pt-4 border-t border-tactical-border flex flex-wrap items-center justify-center gap-3 z-10">
-          <button id="prevBtn" onclick="previousStep()" class="p-3 bg-tactical-bg hover:bg-gray-800 text-gray-300 rounded-xl border border-tactical-border transition-colors flex items-center justify-center disabled:opacity-40" title="Previous Exercise">
+        <div class="pt-3 border-t border-tactical-border flex flex-wrap items-center justify-center gap-2.5 z-10">
+          <button id="prevBtn" onclick="previousStep()" class="p-3 bg-tactical-bg hover:bg-gray-800 text-gray-300 rounded-xl border border-tactical-border transition-colors flex items-center justify-center disabled:opacity-45" title="Previous Exercise">
             <i data-lucide="skip-back" class="w-5 h-5"></i>
           </button>
           
-          <button id="startPauseBtn" onclick="toggleTimer()" class="px-8 py-3.5 bg-tactical-green hover:bg-green-600 text-black font-tactical font-extrabold rounded-xl shadow-lg transition-transform active:scale-95 flex items-center justify-center space-x-2 text-base">
+          <button id="startPauseBtn" onclick="toggleTimer()" class="flex-grow sm:flex-grow-0 px-6 py-3.5 bg-tactical-green hover:bg-green-600 text-black font-tactical font-extrabold rounded-xl shadow-lg transition-transform active:scale-95 flex items-center justify-center space-x-2 text-sm">
             <i data-lucide="play" id="startPauseIcon" class="w-5 h-5 fill-current"></i>
             <span id="startPauseText">START WORKOUT</span>
           </button>
@@ -172,11 +180,11 @@
             <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
           </button>
 
-          <button id="nextBtn" onclick="skipStep()" class="p-3 bg-tactical-bg hover:bg-gray-800 text-gray-300 rounded-xl border border-tactical-border transition-colors flex items-center justify-center disabled:opacity-40" title="Skip to Next">
+          <button id="nextBtn" onclick="skipStep()" class="p-3 bg-tactical-bg hover:bg-gray-800 text-gray-300 rounded-xl border border-tactical-border transition-colors flex items-center justify-center disabled:opacity-45" title="Skip to Next">
             <i data-lucide="skip-forward" class="w-5 h-5"></i>
           </button>
           
-          <button id="audioToggleBtn" onclick="toggleAudio()" class="p-3 bg-tactical-bg hover:bg-gray-800 text-tactical-green rounded-xl border border-tactical-border transition-colors flex items-center justify-center ml-auto" title="Toggle Sound Beeps">
+          <button id="audioToggleBtn" onclick="toggleAudio()" class="p-3 bg-tactical-bg hover:bg-gray-800 text-tactical-green rounded-xl border border-tactical-border transition-colors flex items-center justify-center ml-auto sm:ml-0" title="Toggle Sound Beeps">
             <i data-lucide="volume-2" id="audioIcon" class="w-5 h-5"></i>
           </button>
         </div>
@@ -184,25 +192,25 @@
       </div>
 
       <!-- ACTIVE EXERCISE TIPS & TECHNIQUE -->
-      <div class="bg-tactical-card border border-tactical-border rounded-2xl p-6 shadow-md">
-        <div class="flex items-center space-x-2 mb-4">
-          <i data-lucide="compass" class="w-5 h-5 text-tactical-green"></i>
-          <h3 class="font-tactical text-lg font-bold text-white uppercase tracking-wider">Form & Technique Guide</h3>
+      <div class="bg-tactical-card border border-tactical-border rounded-2xl p-4 sm:p-5 shadow-sm">
+        <div class="flex items-center space-x-2 mb-3">
+          <i data-lucide="compass" class="w-4 h-4 text-tactical-green"></i>
+          <h3 class="font-tactical text-sm font-bold text-white uppercase tracking-wider">Form & Technique Guide</h3>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-tactical-bg p-4 rounded-xl border border-tactical-border">
-            <h4 class="text-xs font-tactical text-tactical-green uppercase mb-2 flex items-center">
-              <i data-lucide="check-circle-2" class="w-4 h-4 mr-1.5"></i> Key Technique Steps
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="bg-tactical-bg p-3 rounded-xl border border-tactical-border">
+            <h4 class="text-[11px] font-tactical text-tactical-green uppercase mb-1.5 flex items-center">
+              <i data-lucide="check-circle-2" class="w-3.5 h-3.5 mr-1"></i> Key Steps
             </h4>
-            <ul id="activeInstructions" class="text-sm text-gray-300 space-y-2 list-disc list-inside">
+            <ul id="activeInstructions" class="text-xs text-gray-300 space-y-1.5 list-disc list-inside">
               <!-- Dynamically populated -->
             </ul>
           </div>
-          <div class="bg-tactical-bg p-4 rounded-xl border border-tactical-border">
-            <h4 class="text-xs font-tactical text-tactical-orange uppercase mb-2 flex items-center">
-              <i data-lucide="target" class="w-4 h-4 mr-1.5"></i> Target Muscles & Focus
+          <div class="bg-tactical-bg p-3 rounded-xl border border-tactical-border">
+            <h4 class="text-[11px] font-tactical text-tactical-orange uppercase mb-1.5 flex items-center">
+              <i data-lucide="target" class="w-3.5 h-3.5 mr-1"></i> Target Muscles
             </h4>
-            <p id="activeTarget" class="text-sm text-gray-300 leading-relaxed">
+            <p id="activeTarget" class="text-xs text-gray-300 leading-relaxed">
               <!-- Dynamically populated -->
             </p>
           </div>
@@ -212,18 +220,18 @@
     </section>
 
     <!-- RIGHT COLUMN: CIRCUIT BREAKDOWN & OVERVIEW (LG: 5 Cols) -->
-    <section class="lg:col-span-5 space-y-6">
+    <section class="lg:col-span-5 space-y-4">
       
-      <div class="flex items-center justify-between mb-2">
-        <h2 class="font-tactical text-xl font-bold text-white flex items-center">
-          <i data-lucide="list-checks" class="w-5 h-5 mr-2 text-tactical-green"></i>
+      <div class="flex items-center justify-between mb-1">
+        <h2 class="font-tactical text-base font-bold text-white flex items-center">
+          <i data-lucide="list-checks" class="w-4 h-4 mr-2 text-tactical-green"></i>
           CIRCUIT SCHEDULE
         </h2>
-        <span class="text-xs font-tactical text-tactical-muted">40s WORK / 20s REST</span>
+        <span class="text-[11px] font-tactical text-tactical-muted">40S WORK / 20S REST</span>
       </div>
 
-      <!-- CIRCUIT CARDS ACCORDION/LIST -->
-      <div id="circuitListContainer" class="space-y-4">
+      <!-- CIRCUIT CARDS CONTAINER -->
+      <div id="circuitListContainer" class="space-y-3">
         <!-- Dynamically rendered circuits -->
       </div>
 
@@ -232,11 +240,11 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="border-t border-tactical-border bg-tactical-card py-4 mt-8">
+  <footer class="border-t border-tactical-border bg-tactical-card py-3 mt-6">
     <div class="max-w-7xl mx-auto px-4 text-center text-xs text-tactical-muted flex flex-col sm:flex-row items-center justify-between gap-2">
-      <p>© Military Calisthenics Routine • High Intensity Interval Training</p>
+      <p>© Military Calisthenics Routine</p>
       <p class="flex items-center gap-1">
-        <i data-lucide="shield-check" class="w-4 h-4 text-tactical-green"></i> Bodyweight Equipment Free
+        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-tactical-green"></i> Equipment Free PWA
       </p>
     </div>
   </footer>
@@ -248,7 +256,7 @@
       {
         id: 1,
         title: "Circuit 1: Lower Body",
-        subtitle: "2 Rounds • Quadriceps, Hamstrings, Glutes",
+        subtitle: "2 Rounds • Quads, Hamstrings, Glutes",
         rounds: 2,
         badgeColor: "text-green-400 border-green-500/30 bg-green-500/10",
         exercises: [
@@ -284,7 +292,7 @@
       {
         id: 2,
         title: "Circuit 2: Upper Body",
-        subtitle: "2 Rounds • Chest, Shoulders, Triceps, Upper Back",
+        subtitle: "2 Rounds • Chest, Shoulders, Triceps",
         rounds: 2,
         badgeColor: "text-blue-400 border-blue-500/30 bg-blue-500/10",
         exercises: [
@@ -320,7 +328,7 @@
       {
         id: 3,
         title: "Circuit 3: Core",
-        subtitle: "1 Round • Rectus Abdominis, Obliques, Deep Core",
+        subtitle: "1 Round • Abs, Obliques, Deep Core",
         rounds: 1,
         badgeColor: "text-orange-400 border-orange-500/30 bg-orange-500/10",
         exercises: [
@@ -359,15 +367,13 @@
     const REST_DURATION = 20;
 
     // --- STATE MANAGEMENT ---
-    let schedule = []; // Flattened list of all 15 exercise intervals
+    let schedule = [];
     let currentIndex = 0;
-    let isWorkPhase = true; // true = WORK, false = REST
+    let isWorkPhase = true;
     let phaseTimeRemaining = WORK_DURATION;
     let timerInterval = null;
     let isRunning = false;
     let audioEnabled = true;
-
-    // --- WEB AUDIO API FOR BEEPS ---
     let audioCtx = null;
 
     function initAudio() {
@@ -394,7 +400,7 @@
         osc.start();
         osc.stop(audioCtx.currentTime + duration);
       } catch (e) {
-        console.log("Audio not allowed yet");
+        console.log("Audio error");
       }
     }
 
@@ -412,7 +418,6 @@
       lucide.createIcons();
     }
 
-    // --- BUILD FLATTENED WORKOUT SCHEDULE ---
     function buildSchedule() {
       schedule = [];
       WORKOUT_CONFIG.forEach(circuit => {
@@ -430,34 +435,33 @@
       });
     }
 
-    // --- RENDER CIRCUIT LIST SIDEBAR ---
     function renderCircuitOverview() {
       const container = document.getElementById('circuitListContainer');
       container.innerHTML = '';
 
       WORKOUT_CONFIG.forEach(circuit => {
         const card = document.createElement('div');
-        card.className = 'bg-tactical-card border border-tactical-border rounded-xl p-4 transition-all duration-200';
+        card.className = 'bg-tactical-card border border-tactical-border rounded-xl p-3 transition-all duration-200';
         card.id = `circuit-card-${circuit.id}`;
 
         let exerciseListHtml = circuit.exercises.map(ex => `
-          <li class="text-xs text-gray-300 flex items-center py-1 border-b border-tactical-border/50 last:border-0">
-            <i data-lucide="chevron-right" class="w-3.5 h-3.5 mr-1.5 text-tactical-muted"></i>
+          <li class="text-[11px] text-gray-300 flex items-center py-0.5 border-b border-tactical-border/40 last:border-0">
+            <i data-lucide="chevron-right" class="w-3 h-3 mr-1 text-tactical-muted"></i>
             <span>${ex.name}</span>
           </li>
         `).join('');
 
         card.innerHTML = `
-          <div class="flex justify-between items-start mb-2">
+          <div class="flex justify-between items-start mb-1.5">
             <div>
-              <h3 class="font-tactical text-base font-bold text-white">${circuit.title}</h3>
-              <p class="text-xs text-tactical-muted">${circuit.subtitle}</p>
+              <h3 class="font-tactical text-sm font-bold text-white">${circuit.title}</h3>
+              <p class="text-[10px] text-tactical-muted">${circuit.subtitle}</p>
             </div>
-            <span class="text-xs font-tactical px-2 py-0.5 rounded border ${circuit.badgeColor}">
+            <span class="text-[10px] font-tactical px-2 py-0.5 rounded border ${circuit.badgeColor}">
               ${circuit.id === 3 ? '1 Round' : '2 Rounds'}
             </span>
           </div>
-          <ul class="mt-3 space-y-1 bg-tactical-bg p-2.5 rounded-lg border border-tactical-border">
+          <ul class="mt-2 space-y-0.5 bg-tactical-bg p-2 rounded-lg border border-tactical-border">
             ${exerciseListHtml}
           </ul>
         `;
@@ -466,7 +470,6 @@
       lucide.createIcons();
     }
 
-    // --- UPDATE UI STATES ---
     function updateUI() {
       if (schedule.length === 0) return;
 
@@ -479,16 +482,14 @@
       const totalTimeDisplay = document.getElementById("totalTimeDisplay");
       const circuitBadge = document.getElementById("circuitBadge");
 
-      // Active Instructions
       const activeInstructions = document.getElementById("activeInstructions");
       const activeTarget = document.getElementById("activeTarget");
 
-      // Update Exercise Text
       if (isWorkPhase) {
         currentExerciseTitle.textContent = currentItem.exercise.name;
         exerciseContextText.textContent = `${currentItem.circuitTitle} • Round ${currentItem.roundNum} of ${currentItem.totalRounds}`;
         phaseBadge.textContent = "WORK";
-        phaseBadge.className = "px-4 py-1.5 rounded-full text-xs font-tactical font-bold uppercase tracking-wider bg-tactical-green text-black shadow-lg";
+        phaseBadge.className = "px-3 py-1 rounded-full text-[11px] font-tactical font-bold uppercase tracking-wider bg-tactical-green text-black shadow-md";
         
         timerCard.classList.remove("glow-rest");
         timerCard.classList.add("glow-work");
@@ -496,10 +497,10 @@
         currentExerciseTitle.textContent = "REST & RECOVER";
         const nextItem = schedule[currentIndex + 1];
         exerciseContextText.textContent = nextItem 
-          ? `UP NEXT: ${nextItem.exercise.name} (${nextItem.circuitTitle})` 
-          : "FINAL REST • WORKOUT NEARLY COMPLETE!";
+          ? `UP NEXT: ${nextItem.exercise.name}` 
+          : "FINAL REST • NEARLY COMPLETE!";
         phaseBadge.textContent = "REST";
-        phaseBadge.className = "px-4 py-1.5 rounded-full text-xs font-tactical font-bold uppercase tracking-wider bg-tactical-orange text-black shadow-lg";
+        phaseBadge.className = "px-3 py-1 rounded-full text-[11px] font-tactical font-bold uppercase tracking-wider bg-tactical-orange text-black shadow-md";
         
         timerCard.classList.remove("glow-work");
         timerCard.classList.add("glow-rest");
@@ -507,40 +508,34 @@
 
       circuitBadge.textContent = `Circuit ${currentItem.circuitId} of 3`;
 
-      // Update Numeric Interval Time
       const mins = Math.floor(phaseTimeRemaining / 60);
       const secs = phaseTimeRemaining % 60;
       intervalTimeDisplay.textContent = `${secs < 10 ? '0' : ''}${secs}`;
 
-      // Update Total Time Remaining
-      // Total elapsed seconds = (currentIndex * 60) + (isWorkPhase ? (40 - phaseTimeRemaining) : (40 + (20 - phaseTimeRemaining)))
       const elapsedSecs = (currentIndex * 60) + (isWorkPhase ? (WORK_DURATION - phaseTimeRemaining) : (WORK_DURATION + (REST_DURATION - phaseTimeRemaining)));
       const totalRemainingSecs = Math.max(0, 900 - elapsedSecs);
       const totMins = Math.floor(totalRemainingSecs / 60);
       const totSecs = totalRemainingSecs % 60;
       totalTimeDisplay.textContent = `${totMins}:${totSecs < 10 ? '0' : ''}${totSecs}`;
 
-      // Update Progress Bars
       const maxInterval = isWorkPhase ? WORK_DURATION : REST_DURATION;
       const intervalPct = Math.min(100, Math.max(0, (phaseTimeRemaining / maxInterval) * 100));
       document.getElementById("intervalProgressBar").style.width = `${intervalPct}%`;
       document.getElementById("intervalProgressPercent").textContent = `${Math.round(intervalPct)}%`;
 
       if (!isWorkPhase) {
-        document.getElementById("intervalProgressBar").className = "bg-tactical-orange h-2.5 rounded-full transition-all duration-300";
+        document.getElementById("intervalProgressBar").className = "bg-tactical-orange h-2 rounded-full transition-all duration-300";
       } else {
-        document.getElementById("intervalProgressBar").className = "bg-tactical-green h-2.5 rounded-full transition-all duration-300";
+        document.getElementById("intervalProgressBar").className = "bg-tactical-green h-2 rounded-full transition-all duration-300";
       }
 
       const overallPct = Math.min(100, Math.max(0, (elapsedSecs / 900) * 100));
       document.getElementById("overallProgressBar").style.width = `${overallPct}%`;
       document.getElementById("overallProgressPercent").textContent = `${Math.round(overallPct)}%`;
 
-      // Update Form Instructions
       activeInstructions.innerHTML = currentItem.exercise.instructions.map(inst => `<li>${inst}</li>`).join('');
       activeTarget.textContent = currentItem.exercise.target;
 
-      // Update Sidebar Card Highlight
       WORKOUT_CONFIG.forEach(c => {
         const cardEl = document.getElementById(`circuit-card-${c.id}`);
         if (c.id === currentItem.circuitId) {
@@ -550,12 +545,10 @@
         }
       });
 
-      // Update Disable states for Prev/Next
       document.getElementById("prevBtn").disabled = (currentIndex === 0 && isWorkPhase);
       document.getElementById("nextBtn").disabled = (currentIndex === schedule.length - 1 && !isWorkPhase);
     }
 
-    // --- TIMER CONTROL FUNCTIONS ---
     function toggleTimer() {
       initAudio();
       if (isRunning) {
@@ -590,26 +583,22 @@
     function tick() {
       phaseTimeRemaining--;
 
-      // Audio countdown for last 3 seconds
       if (phaseTimeRemaining <= 3 && phaseTimeRemaining > 0) {
-        playBeep(440, 'sine', 0.15); // standard warning beep
+        playBeep(440, 'sine', 0.15);
       } else if (phaseTimeRemaining === 0) {
-        playBeep(880, 'triangle', 0.4); // high transition beep
+        playBeep(880, 'triangle', 0.4);
       }
 
       if (phaseTimeRemaining < 0) {
         if (isWorkPhase) {
-          // Switch to REST
           isWorkPhase = false;
           phaseTimeRemaining = REST_DURATION;
         } else {
-          // Switch to WORK next exercise
           if (currentIndex < schedule.length - 1) {
             currentIndex++;
             isWorkPhase = true;
             phaseTimeRemaining = WORK_DURATION;
           } else {
-            // Workout Complete!
             finishWorkout();
             return;
           }
@@ -664,15 +653,21 @@
       setTimeout(() => playBeep(659.25, 'sine', 0.2), 200);
       setTimeout(() => playBeep(783.99, 'sine', 0.5), 400);
 
-      document.getElementById("currentExerciseTitle").textContent = "CHALLENGE COMPLETE! 🎉";
-      document.getElementById("exerciseContextText").textContent = "15-Minute Military Calisthenics Routine Finished";
+      document.getElementById("currentExerciseTitle").textContent = "CHALLENGE COMPLETE!";
+      document.getElementById("exerciseContextText").textContent = "15-Minute Military Calisthenics Finished";
       document.getElementById("phaseBadge").textContent = "VICTORY";
-      document.getElementById("phaseBadge").className = "px-4 py-1.5 rounded-full text-xs font-tactical font-bold uppercase tracking-wider bg-yellow-400 text-black";
+      document.getElementById("phaseBadge").className = "px-3 py-1 rounded-full text-[11px] font-tactical font-bold uppercase tracking-wider bg-yellow-400 text-black";
       document.getElementById("intervalTimeDisplay").textContent = "00:00";
       document.getElementById("totalTimeDisplay").textContent = "0:00";
     }
 
-    // --- INITIALIZATION ---
+    // Register Service Worker for PWA Offline Support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW reg failed', err));
+      });
+    }
+
     window.onload = function () {
       buildSchedule();
       renderCircuitOverview();
